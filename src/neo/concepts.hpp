@@ -1,7 +1,5 @@
 #pragma once
 
-#include <neo/common_reference.hpp>
-
 #include <functional>
 #include <type_traits>
 #include <utility>
