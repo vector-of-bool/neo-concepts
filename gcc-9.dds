@@ -4,4 +4,3 @@ C-Compiler: gcc-9
 C++-Compiler: g++-9
 Flags: -fconcepts -Werror=return-type
 Optimize: True
-Compiler-Launcher: ccache
