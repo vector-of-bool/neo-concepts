@@ -8,6 +8,16 @@ namespace neo {
 
 // clang-format off
 
+/*
+######## ##    ## ########  ########         ######## ########     ###    #### ########  ######
+   ##     ##  ##  ##     ## ##                  ##    ##     ##   ## ##    ##     ##    ##    ##
+   ##      ####   ##     ## ##                  ##    ##     ##  ##   ##   ##     ##    ##
+   ##       ##    ########  ######              ##    ########  ##     ##  ##     ##     ######
+   ##       ##    ##        ##                  ##    ##   ##   #########  ##     ##          ##
+   ##       ##    ##        ##                  ##    ##    ##  ##     ##  ##     ##    ##    ##
+   ##       ##    ##        ######## #######    ##    ##     ## ##     ## ####    ##     ######
+*/
+
 namespace detail {
 
 template <typename A, typename B>
@@ -78,6 +88,22 @@ concept copyable =
     copy_constructible<T> &&
     movable<T> &&
     assignable_from<T&, const T&>;
+
+template <typename T>
+concept trivially_copyable = copyable<T> && std::is_trivially_copyable_v<T>;
+
+template <typename T>
+concept trivial_type = trivially_copyable<T> && std::is_trivial_v<T>;
+
+/*
+ #######  ########  ######## ########     ###    ########  #######  ########   ######
+##     ## ##     ## ##       ##     ##   ## ##      ##    ##     ## ##     ## ##    ##
+##     ## ##     ## ##       ##     ##  ##   ##     ##    ##     ## ##     ## ##
+##     ## ########  ######   ########  ##     ##    ##    ##     ## ########   ######
+##     ## ##        ##       ##   ##   #########    ##    ##     ## ##   ##         ##
+##     ## ##        ##       ##    ##  ##     ##    ##    ##     ## ##    ##  ##    ##
+ #######  ##        ######## ##     ## ##     ##    ##     #######  ##     ##  ######
+*/
 
 template <typename B>
 concept simple_boolean = requires(const B b) {
