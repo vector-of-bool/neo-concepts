@@ -35,14 +35,16 @@ struct int_comparer {
     bool operator()(int, int);
 };
 
-struct empty_derived : empty {
-};
+struct empty_derived : empty {};
 
 #define EXPAND(V) V
 #define PASTE(a, b) a##b
 
 #define TEST_CONCEPT_1(N, ConceptName, ...)                                                        \
-    int  PASTE(foo_, N)() requires ConceptName<__VA_ARGS__> { return N; }                          \
+    template <typename = void>                                                                     \
+    int PASTE(foo_, N)() requires ConceptName<__VA_ARGS__> {                                       \
+        return N;                                                                                  \
+    }                                                                                              \
     auto PASTE(value_, N) = PASTE(foo_, N)()
 
 #define TEST_CONCEPT(ConceptName, ...) TEST_CONCEPT_1(__COUNTER__, ConceptName, __VA_ARGS__)
