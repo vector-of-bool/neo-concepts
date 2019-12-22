@@ -74,7 +74,8 @@ template <typename Left, typename Right>
 concept assignable_from =
     std::is_lvalue_reference_v<Left> &&
     requires(Left lhs, Right&& rhs) {
-        { lhs = std::forward<Right>(rhs) } -> same_as<Left> ;
+        lhs = std::forward<Right>(rhs);
+        requires same_as<decltype(lhs = std::forward<Right>(rhs)), Left>;
     };
 
 template <typename T>
@@ -149,7 +150,7 @@ concept totally_ordered_with =
     totally_ordered<U> &&
     equality_comparable_with<T, U> &&
     requires(const std::remove_reference_t<T>& t,
-             const std::remove_reference<U>& u) {
+             const std::remove_reference_t<U>& u) {
         { t < u } -> simple_boolean;
         { t > u } -> simple_boolean;
         { t <= u } -> simple_boolean;
