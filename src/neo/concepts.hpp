@@ -4,6 +4,10 @@
 #include <type_traits>
 #include <utility>
 
+#if defined __GNUC__ && __GNUC__ < 10
+#define NEO_CONCEPTS_IS_CONCEPTS_TS 1
+#endif
+
 namespace neo {
 
 // clang-format off
@@ -58,7 +62,9 @@ concept constructible_from =
     && std::is_constructible_v<T, Args...>;
 
 template <typename T>
-concept default_constructible = constructible_from<T>;
+concept default_initializable =
+    constructible_from<T>
+    && requires { T{}; };
 
 template <typename T>
 concept move_constructible = constructible_from<T, T> && convertible_to<T, T>;
@@ -162,7 +168,7 @@ concept totally_ordered_with =
     };
 
 template <typename T>
-concept semiregular = copyable<T> && default_constructible<T>;
+concept semiregular = copyable<T> && default_initializable<T>;
 
 template <typename T>
 concept regular = semiregular<T> && equality_comparable<T>;
