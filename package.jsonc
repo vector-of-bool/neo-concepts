@@ -1,5 +1,6 @@
 {
     "name": "neo-concepts",
     "version": "0.2.2",
-    "namespace": "neo"
+    "namespace": "neo",
+    "test_driver": "Catch-Main"
 }
