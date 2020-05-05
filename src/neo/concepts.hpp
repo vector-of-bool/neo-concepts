@@ -194,6 +194,22 @@ concept relation =
     predicate<Rel, T, U> &&
     predicate<Rel, U, T>;
 
+/*
+######## ##     ## ######## ######## ##    ##  ######  ####  #######  ##    ##  ######
+##        ##   ##     ##    ##       ###   ## ##    ##  ##  ##     ## ###   ## ##    ##
+##         ## ##      ##    ##       ####  ## ##        ##  ##     ## ####  ## ##
+######      ###       ##    ######   ## ## ##  ######   ##  ##     ## ## ## ##  ######
+##         ## ##      ##    ##       ##  ####       ##  ##  ##     ## ##  ####       ##
+##        ##   ##     ##    ##       ##   ### ##    ##  ##  ##     ## ##   ### ##    ##
+######## ##     ##    ##    ######## ##    ##  ######  ####  #######  ##    ##  ######
+*/
+
+template <typename T, typename Target>
+concept alike = same_as<std::decay_t<T>, std::decay_t<Target>>;
+
+template <typename T, typename Target>
+concept unalike = same_as<std::decay_t<T>, std::decay_t<Target>>;
+
 // clang-format on
 
 }  // namespace neo
