@@ -104,9 +104,11 @@ NEO_TEST_CONCEPT(!copyable, std::unique_ptr<int>);
 NEO_TEST_CONCEPT(trivially_copyable, int);
 NEO_TEST_CONCEPT(!trivially_copyable, std::string);
 NEO_TEST_CONCEPT(trivially_copyable, empty);
+NEO_TEST_CONCEPT(trivially_copyable, empty[8]);
 
 NEO_TEST_CONCEPT(trivial_type, int);
 NEO_TEST_CONCEPT(trivial_type, empty);
+NEO_TEST_CONCEPT(trivial_type, empty[4]);
 NEO_TEST_CONCEPT(!trivial_type, nontrivial);
 
 NEO_TEST_CONCEPT(simple_boolean, int);
