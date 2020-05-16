@@ -94,12 +94,12 @@ template <typename T>
 concept copyable =
     copy_constructible<T> &&
     movable<T> &&
-    assignable_from<T&, const T&>;
+    assignable_from<T&, const T&> &&
+    assignable_from<T&, T&> &&
+    assignable_from<T&, const T>;
 
 template <typename T>
-concept trivially_copyable =
-    (copyable<T> && std::is_trivially_copyable_v<T>)
-    || (std::is_array_v<T> && trivially_copyable<std::remove_all_extents_t<T>>);
+concept trivially_copyable = copyable<T> && std::is_trivially_copyable_v<T>;
 
 template <typename T>
 concept trivial_type = trivially_copyable<T> && std::is_trivial_v<T>;
