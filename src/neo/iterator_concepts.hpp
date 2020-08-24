@@ -8,6 +8,8 @@
 #include <type_traits>  // various
 #include <utility>      // forward, move
 
+#if !__cpp_lib_concepts
+
 namespace neo {
 
 struct contiguous_iterator_tag : std::random_access_iterator_tag {};
@@ -22,9 +24,7 @@ template <typename T>
 requires requires(T ptr) {
     std::pointer_traits<T>::to_adderss(ptr);
 }
-constexpr auto to_address(const T& p) {
-    return std::pointer_traits<T>::to_address(p);
-}
+constexpr auto to_address(const T& p) { return std::pointer_traits<T>::to_address(p); }
 
 template <typename T>
 requires requires(T it) {
@@ -383,3 +383,30 @@ concept contiguous_iterator =
 // clang-format on
 
 }  // namespace neo
+
+#else  // __cpp_lib_concepts
+
+namespace neo {
+
+using std::iter_difference_t;
+using std::iter_reference_t;
+using std::iter_rvalue_reference_t;
+using std::iter_value_t;
+
+using std::bidirectional_iterator;
+using std::contiguous_iterator;
+using std::forward_iterator;
+using std::incrementable;
+using std::indirectly_readable;
+using std::indirectly_writable;
+using std::input_iterator;
+using std::input_or_output_iterator;
+using std::output_iterator;
+using std::random_access_iterator;
+using std::sentinel_for;
+using std::sized_sentinel_for;
+using std::weakly_incrementable;
+
+}  // namespace neo
+
+#endif
