@@ -8,6 +8,17 @@
 #define NEO_CONCEPTS_IS_CONCEPTS_TS 1
 #endif
 
+#ifdef __has_include
+#if __has_include(<version>)
+#include <version>
+#endif
+#endif
+
+#if __cpp_lib_concepts
+#include <concepts>
+#endif
+
+#if !__cpp_lib_concepts
 namespace neo {
 
 // clang-format off
@@ -97,12 +108,6 @@ concept copyable =
     assignable_from<T&, const T&> &&
     assignable_from<T&, T&> &&
     assignable_from<T&, const T>;
-
-template <typename T>
-concept trivially_copyable = copyable<T> && std::is_trivially_copyable_v<T>;
-
-template <typename T>
-concept trivial_type = trivially_copyable<T> && std::is_trivial_v<T>;
 
 /*
  #######  ########  ######## ########     ###    ########  #######  ########   ######
@@ -196,6 +201,49 @@ concept relation =
     predicate<Rel, T, U> &&
     predicate<Rel, U, T>;
 
+// clang-format on
+
+}  // namespace neo
+
+#else  // __cpp_lib_concepts
+
+namespace neo {
+
+using std::assignable_from;
+using std::constructible_from;
+using std::convertible_to;
+using std::copy_constructible;
+using std::copyable;
+using std::default_initializable;
+using std::derived_from;
+using std::destructible;
+using std::integral;
+using std::movable;
+using std::move_constructible;
+using std::same_as;
+using std::signed_integral;
+// using std::trivial_type;
+// using std::trivially_copyable;
+using std::unsigned_integral;
+
+using std::equality_comparable;
+using std::equality_comparable_with;
+using std::invocable;
+using std::predicate;
+using std::regular;
+using std::regular_invocable;
+using std::relation;
+using std::semiregular;
+using std::totally_ordered;
+using std::totally_ordered_with;
+
+}  // namespace neo
+
+#endif
+
+// clang-format off
+namespace neo {
+
 /*
 ######## ##     ## ######## ######## ##    ##  ######  ####  #######  ##    ##  ######
 ##        ##   ##     ##    ##       ###   ## ##    ##  ##  ##     ## ###   ## ##    ##
@@ -212,6 +260,18 @@ concept alike = same_as<std::decay_t<T>, std::decay_t<Target>>;
 template <typename T, typename Target>
 concept unalike = same_as<std::decay_t<T>, std::decay_t<Target>>;
 
-// clang-format on
+template <typename T>
+concept trivially_copyable = copyable<T> && std::is_trivially_copyable_v<T>;
 
-}  // namespace neo
+template <typename T>
+concept trivial_type = trivially_copyable<T> && std::is_trivial_v<T>;
+
+#if __cpp_lib_concepts
+template <typename B>
+concept simple_boolean = requires(const B b) {
+    b ? 0 : 0;
+};
+#endif
+
+} // namespace neo
+// clang-format off
